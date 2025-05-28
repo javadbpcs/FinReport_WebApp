@@ -1,0 +1,12 @@
+Django>=4.2.18
+agno>=1.5.0
+yfinance>=0.2.36
+pandas>=2.0.0
+fredapi>=0.4.3
+python-dotenv>=1.0.0
+requests>=2.31.0
+sec-api>=1.0.32
+polygon-api-client>=1.12.3
+openai>=1.76.0
+pydantic>=2.10,<3
+openai-agents==0.0.15 
