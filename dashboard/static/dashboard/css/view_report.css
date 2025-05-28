@@ -1,0 +1,479 @@
+.text-submission-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.text-submission-form h3 {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #4A90E2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.analyze-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.analyze-btn .icon {
+    width: 18px;
+    height: 18px;
+}
+
+.analysis-status {
+    margin: 20px 0;
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.spinner {
+    border: 3px solid rgba(74, 144, 226, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #4A90E2;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.analysis-result {
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e1e4e8;
+    background-color: #f8f9fa;
+}
+
+.analysis-header h2 {
+    font-size: 1.2em;
+    color: #333;
+    margin: 0;
+}
+
+.analysis-content {
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.markdown-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.markdown-content th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #e1e4e8;
+    white-space: nowrap;
+}
+
+.markdown-content td {
+    padding: 12px;
+    border: 1px solid #e1e4e8;
+    white-space: normal;
+    min-width: 150px;
+}
+
+.markdown-content tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.markdown-content p {
+    margin: 16px 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    padding-left: 24px;
+    margin: 16px 0;
+}
+
+.markdown-content li {
+    margin: 8px 0;
+}
+
+.markdown-content pre {
+    background-color: #f6f8fa;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.markdown-content code {
+    background-color: #f6f8fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 85%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.analysis-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: 1px solid #e1e4e8;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.analysis-preview {
+    position: relative;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.analysis-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(transparent, white);
+}
+
+.analysis-full {
+    display: none;
+}
+
+.report-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.rename-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+
+#new-name {
+    max-width: 300px;
+}
+
+.report-header {
+    margin-bottom: 20px;
+}
+
+.report-meta {
+    margin-top: 15px;
+}
+
+.report-type {
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-right: 15px;
+}
+
+.report-date {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.report-description {
+    margin-top: 10px;
+    color: #495057;
+}
+
+/* Stock Information Styles */
+.reports-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stock-info-result {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stock-info-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.stock-info-header h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.stock-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.analysis-result {
+    margin-top: 0;  /* Remove top margin since we're using gap in reports-container */
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.info-section h4 {
+    color: #34495e;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.info-row {
+    display: flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    flex: 1;
+    font-weight: 500;
+    color: #495057;
+}
+
+.info-value {
+    flex: 2;
+    color: #212529;
+}
+
+/* Ensure proper spacing between sections */
+.info-section:last-child {
+    margin-bottom: 0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+/* Stock Information Styles */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stock-info-result {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.stock-info-result h3 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+}
+
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.info-section h4 {
+    color: #34495e;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+}
+
+.info-row {
+    display: flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    flex: 1;
+    font-weight: 500;
+    color: #495057;
+}
+
+.info-value {
+    flex: 2;
+    color: #212529;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary .icon {
+    width: 20px;
+    height: 20px;
+    color: currentColor;
+}
+
+.btn-primary .icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Fix SVG colors to match button text */
+.btn-primary svg {
+    color: inherit;
+    fill: none;
+    stroke: currentColor;
+}
+
+.stock-info-btn svg,
+.analyze-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Quick Links */
+.quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f5f7fa;
+    border-radius: 6px;
+}
+
+.quick-links a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.quick-links .icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Analysis Actions */
+.analysis-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.analysis-actions a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.analysis-actions .icon {
+    width: 16px;
+    height: 16px;
+} 

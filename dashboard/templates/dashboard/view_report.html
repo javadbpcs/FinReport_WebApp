@@ -1,0 +1,159 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="report-view">
+    <div class="report-header">
+        <div class="report-title">
+            <h1 id="report-name">{{ report.name }}</h1>
+            <div class="report-actions">
+                <button class="btn-secondary" onclick="startRename()">
+                    <img src="{% static 'dashboard/images/edit.svg' %}" alt="Edit" class="icon">
+                    Rename
+                </button>
+                <button class="btn-danger" onclick="showDeleteModal()">
+                    <img src="{% static 'dashboard/images/delete.svg' %}" alt="Delete" class="icon">
+                    Delete
+                </button>
+            </div>
+        </div>
+        <!-- Rename Form -->
+        <div id="rename-form" class="rename-form" style="display: none;">
+            <input type="text" id="new-name" value="{{ report.name }}" class="form-control">
+            <button onclick="saveNewName()" class="btn-primary">Save</button>
+            <button onclick="cancelRename()" class="btn-secondary">Cancel</button>
+        </div>
+        <div class="report-meta">
+            <span class="report-type">{{ report.get_report_type_display }}</span>
+            <span class="report-date">Created: {{ report.created_at|date:"M d, Y" }}</span>
+            {% if report.description %}
+            <div class="report-description">
+                <p>{{ report.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="report-content">
+        <!-- Report content will be added here based on the report type -->
+        {% if report.report_type == 'individual' %}
+            <div class="company-report">
+                <h2>Individual Company Report</h2>
+                <!-- Add company-specific report content -->
+                <div class="text-submission-form">
+                    <h3>Enter Name of the Public Company</h3>
+                    
+                    <div class="quick-links">
+                        <a href="{% url 'stock_analyzer:stock_dashboard' %}" class="btn-secondary">
+                            <img src="{% static 'dashboard/images/chart.svg' %}" alt="Dashboard" class="icon">
+                            Stock Dashboard
+                        </a>
+                        <a href="{% url 'stock_analyzer:stock_search' %}" class="btn-secondary">
+                            <img src="{% static 'dashboard/images/search.svg' %}" alt="Search" class="icon">
+                            Search Stocks
+                        </a>
+                    </div>
+                    
+                    <form id="text-submission-form" method="POST" action="{% url 'stock_analyzer:process_stock_analysis' report.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" id="stock-symbol" name="stock_symbol" class="form-control" placeholder="e.g., AAPL, TSLA, MSFT" required>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn-primary analyze-btn">
+                                <img src="{% static 'dashboard/images/chart.svg' %}" alt="Chart" class="icon">
+                                Analyze Stock
+                            </button>
+                            <button type="button" class="btn-primary stock-info-btn" onclick="getStockInfo()">
+                                <img src="{% static 'dashboard/images/info.svg' %}" alt="Info" class="icon">
+                                Stock Information Report
+                            </button>
+                        </div>
+                    </form>
+                    <div id="analysis-status" class="analysis-status" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing stock data...</p>
+                    </div>
+                    <div class="reports-container">
+                        <div id="stock-info-result" class="stock-info-result" style="display: none;">
+                            <div class="stock-info-header">
+                                <h2>Stock Information for <span id="info-symbol"></span></h2>
+                            </div>
+                            <div class="stock-info-content">
+                                <!-- Stock information will be displayed here -->
+                            </div>
+                        </div>
+                        <div id="analysis-result" class="analysis-result" {% if not latest_analysis %}style="display: none;"{% endif %}>
+                            <div class="analysis-header">
+                                <h2>Analysis Results for <span id="result-symbol">{% if latest_analysis %}{{ latest_analysis.stock_symbol }}{% endif %}</span></h2>
+                                <div class="analysis-actions">
+                                    <button id="toggle-full-analysis" class="btn-secondary">View Full Analysis</button>
+                                    {% if latest_analysis %}
+                                    <a href="{% url 'stock_analyzer:stock_dashboard_with_symbol' latest_analysis.stock_symbol %}" class="btn-primary">
+                                        <img src="{% static 'dashboard/images/chart.svg' %}" alt="Dashboard" class="icon">
+                                        View Stock Dashboard
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="analysis-content markdown-content">
+                                <!-- Analysis results will be displayed here -->
+                                {% if latest_analysis %}
+                                    <div class="analysis-preview">
+                                        {{ latest_analysis.analysis_result|safe }}
+                                    </div>
+                                    <div class="analysis-full" style="display: none;">
+                                        {{ latest_analysis.analysis_result|safe }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif report.report_type == 'list' %}
+            <div class="companies-list">
+                <h2>Companies List Report</h2>
+                <!-- Add companies list report content -->
+            </div>
+        {% elif report.report_type == 'market' %}
+            <div class="market-report">
+                <h2>Market Sector Report</h2>
+                <!-- Add market sector report content -->
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal">
+    <div class="modal-content">
+        <h2>Delete Report</h2>
+        <p>Are you sure you want to delete "{{ report.name }}"?</p>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="hideDeleteModal()">Cancel</button>
+            <form action="{% url 'dashboard:delete_report' report.id %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'dashboard/css/view_report.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    // Pass Django template variables to JavaScript
+    const csrfToken = '{{ csrf_token }}';
+    const renameReportUrl = '{% url "dashboard:rename_report" report.id %}';
+    const viewReportUrl = '{% url "dashboard:view_report" report.id %}';
+    const reportId = {{ report.id }};
+</script>
+<script src="{% static 'dashboard/js/view_report.js' %}"></script>
+{% endblock %} 

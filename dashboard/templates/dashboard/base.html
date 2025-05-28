@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint SaaS Platform</title>
+    {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'dashboard/images/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="{% static 'dashboard/images/logo.svg' %}" alt="Blueprint" class="logo">
+                <span>Blueprint</span>
+                <span class="subtitle">SaaS Platform</span>
+            </div>
+            
+            <!-- Top navigation items -->
+            <div class="top-nav-items">
+                <ul>
+                    <li><a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+                        <img src="{% static 'dashboard/images/home.svg' %}" alt="Home" class="icon">
+                        Home
+                    </a></li>
+                    <li><a href="{% url 'stock_analyzer:economic_dashboard' %}" class="nav-item {% if '/stock-analyzer/economic/' in request.path %}active{% endif %}">
+                        <img src="{% static 'dashboard/images/chart.svg' %}" alt="Economic Indicators" class="icon">
+                        Economic Indicators
+                    </a></li>
+                    <li><a href="{% url 'stock_analyzer:stock_dashboard' %}" class="nav-item {% if '/stock-analyzer/dashboard/' in request.path %}active{% endif %}">
+                        <img src="{% static 'dashboard/images/analytics.svg' %}" alt="Stock Dashboard" class="icon">
+                        Stock Dashboard
+                    </a></li>
+                    <li><a href="{% url 'stock_analyzer:stock_search' %}" class="nav-item {% if '/stock-analyzer/search/' in request.path %}active{% endif %}">
+                        <img src="{% static 'dashboard/images/search.svg' %}" alt="Stock Search" class="icon">
+                        Stock Search
+                    </a></li>
+                </ul>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <h3>List of Reports</h3>
+                    <ul>
+                        <li><a href="{% url 'dashboard:report1' %}" class="nav-item {% if request.path == '/dashboard/report1/' %}active{% endif %}">Report 1</a></li>
+                        <li><a href="{% url 'dashboard:report2' %}" class="nav-item {% if request.path == '/dashboard/report2/' %}active{% endif %}">Report 2</a></li>
+                        {% if reports %}
+                            {% for report in reports %}
+                                <li><a href="{% url 'dashboard:view_report' report.id %}" class="nav-item {% if request.resolver_match.kwargs.report_id == report.id|stringformat:'s' %}active{% endif %}">{{ report.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="new-report-btn">
+                    <a href="{% url 'dashboard:new_report' %}" class="btn-primary">+ New Report</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <button id="sidebar-toggle" class="icon-button">
+                        <img src="{% static 'dashboard/images/menu.svg' %}" alt="Toggle Sidebar" class="sidebar-icon">
+                    </button>
+                    <input type="search" placeholder="Search here" class="search-input">
+                </div>
+                <div class="top-bar-actions">
+                    <button class="icon-button settings">
+                        <img src="{% static 'dashboard/images/settings.svg' %}" alt="Settings">
+                    </button>
+                    <button class="icon-button notifications">
+                        <img src="{% static 'dashboard/images/bell.svg' %}" alt="Notifications">
+                    </button>
+                    <button class="icon-button help">
+                        <img src="{% static 'dashboard/images/help.svg' %}" alt="Help">
+                    </button>
+                    <button class="icon-button profile">
+                        <img src="{% static 'dashboard/images/profile.svg' %}" alt="Profile">
+                    </button>
+                </div>
+            </header>
+
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const sidebarIcon = document.querySelector('.sidebar-icon');
+            
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                // Rotate the chevron icon based on sidebar state
+                if (sidebar.classList.contains('collapsed')) {
+                    sidebarIcon.style.transform = 'rotate(180deg)';
+                } else {
+                    sidebarIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
